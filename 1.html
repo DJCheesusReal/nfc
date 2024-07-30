@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFC Card Testing</title>
+    <title>NFC Card Page</title>
     <style>
         body {
             background-color: #121212;
@@ -14,19 +14,26 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
         .container {
             text-align: center;
+            animation: fadeIn 2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .card {
             background-color: #1e1e1e;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         .card:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
         }
         .btn {
             background-color: #6200ea;
@@ -36,67 +43,47 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 20px;
         }
         .btn:hover {
             background-color: #3700b3;
         }
-        .log {
-            background-color: #1e1e1e;
-            border-radius: 10px;
+        .btn:active {
+            transform: scale(0.95);
+        }
+        .content {
             margin-top: 20px;
-            padding: 20px;
-            max-height: 200px;
-            overflow-y: auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 1.1em;
+        }
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+            color: #bbbbbb;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>NFC Card Testing</h1>
         <div class="card">
-            <p>Hold your NFC card near your device to start testing.</p>
-            <button class="btn" onclick="startNFC()">Start NFC</button>
+            <h1>Welcome to My NFC Card Page</h1>
+            <p>Explore the cool features of this card.</p>
+            <button class="btn" onclick="showContent()">Click Me!</button>
         </div>
-        <div class="log" id="log">
-            <p>Logs will appear here...</p>
+        <div class="content" id="content" style="display:none;">
+            <p>This is a demo of what the NFC card can do! You can customize this message and add more features as needed.</p>
         </div>
+    </div>
+    <div class="footer">
+        &copy; 2024 Your Name
     </div>
 
     <script>
-        function logMessage(message) {
-            const log = document.getElementById('log');
-            const newLog = document.createElement('p');
-            newLog.textContent = message;
-            log.appendChild(newLog);
-            log.scrollTop = log.scrollHeight;
-        }
-
-        async function startNFC() {
-            if ('NDEFReader' in window) {
-                try {
-                    const ndef = new NDEFReader();
-                    await ndef.scan();
-                    logMessage('NFC scanning started.');
-
-                    ndef.onreading = event => {
-                        const decoder = new TextDecoder();
-                        for (const record of event.message.records) {
-                            logMessage(`Record type: ${record.recordType}`);
-                            logMessage(`Media type: ${record.mediaType}`);
-                            logMessage(`Data: ${decoder.decode(record.data)}`);
-                        }
-                    };
-
-                    ndef.onreadingerror = () => {
-                        logMessage('Error: Cannot read NFC tag.');
-                    };
-                } catch (error) {
-                    logMessage(`Error: ${error.message}`);
-                }
-            } else {
-                logMessage('NFC is not supported by your browser.');
-            }
+        function showContent() {
+            const content = document.getElementById('content');
+            content.style.display = 'block';
         }
     </script>
 </body>
