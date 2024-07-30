@@ -30,6 +30,7 @@
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px;
         }
         .card:hover {
             transform: scale(1.05);
@@ -42,7 +43,7 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
             margin-top: 20px;
         }
         .btn:hover {
@@ -54,6 +55,7 @@
         .content {
             margin-top: 20px;
             font-size: 1.1em;
+            animation: fadeIn 1s;
         }
         .footer {
             position: absolute;
@@ -62,6 +64,20 @@
             text-align: center;
             font-size: 0.8em;
             color: #bbbbbb;
+        }
+        .image-container {
+            margin-top: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .image-container img {
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            max-width: 100%;
+            height: auto;
+            transition: transform 0.3s;
+        }
+        .image-container img:hover {
+            transform: rotate(5deg) scale(1.05);
         }
     </style>
 </head>
@@ -74,6 +90,9 @@
         </div>
         <div class="content" id="content" style="display:none;">
             <p>This is a demo of what the NFC card can do! You can customize this message and add more features as needed.</p>
+            <div class="image-container">
+                <img src="https://i.imgur.com/4HZfVPQ.jpeg" alt="Funny Picture">
+            </div>
         </div>
     </div>
     <div class="footer">
