@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC Card Testing</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .btn {
+            background-color: #6200ea;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #3700b3;
+        }
+        .log {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            margin-top: 20px;
+            padding: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>NFC Card Testing</h1>
+        <div class="card">
+            <p>Hold your NFC card near your device to start testing.</p>
+            <button class="btn" onclick="startNFC()">Start NFC</button>
+        </div>
+        <div class="log" id="log">
+            <p>Logs will appear here...</p>
+        </div>
+    </div>
+
+    <script>
+        function logMessage(message) {
+            const log = document.getElementById('log');
+            const newLog = document.createElement('p');
+            newLog.textContent = message;
+            log.appendChild(newLog);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        async function startNFC() {
+            if ('NDEFReader' in window) {
+                try {
+                    const ndef = new NDEFReader();
+                    await ndef.scan();
+                    logMessage('NFC scanning started.');
+
+                    ndef.onreading = event => {
+                        const decoder = new TextDecoder();
+                        for (const record of event.message.records) {
+                            logMessage(`Record type: ${record.recordType}`);
+                            logMessage(`Media type: ${record.mediaType}`);
+                            logMessage(`Data: ${decoder.decode(record.data)}`);
+                        }
+                    };
+
+                    ndef.onreadingerror = () => {
+                        logMessage('Error: Cannot read NFC tag.');
+                    };
+                } catch (error) {
+                    logMessage(`Error: ${error.message}`);
+                }
+            } else {
+                logMessage('NFC is not supported by your browser.');
+            }
+        }
+    </script>
+</body>
+</html>
